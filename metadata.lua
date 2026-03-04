@@ -4,16 +4,16 @@
 
 PLUGIN = { -- luacheck: ignore
     -- Required: Plugin name (will be the backend name users reference)
-    name = "brew",
+    name = "cask",
 
     -- Required: Plugin version (not the tool versions)
     version = "0.0.1",
 
     -- Required: Brief description of the backend and tools it manages
-    description = "A mise backend for fetching Homebrew Bottles",
+    description = "Homebrew Cask backend for mise",
 
     -- Required: Plugin author/maintainer
-    author = "BasixKOR",
+    author = "dt9",
 
     -- Optional: Plugin homepage/repository URL
     homepage = "https://github.com/BasixKOR/mise-brew",
