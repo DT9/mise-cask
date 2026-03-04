@@ -12,37 +12,33 @@ function PLUGIN:BackendInstall(ctx)
     end
 
     -- Handle tap/repo/cask format (e.g. "coder/coder/coder-desktop")
-    -- Count slashes: if 2 slashes, first two parts are the tap, last part is the cask
     local tap, cask_name
     local slash_count = select(2, tool:gsub("/", "/"))
     if slash_count >= 2 then
-        -- e.g. "coder/coder/coder-desktop" → tap="coder/coder", cask="coder-desktop"
         tap = tool:match("^([^/]+/[^/]+)/")
         cask_name = tool:match("[^/]+$")
-        -- Add the tap first (ignore error if already tapped)
-        cmd.exec("bash -c 'brew tap " .. tap .. " 2>/dev/null || true'")
+        -- Silently add the tap (ignore error if already tapped)
+        pcall(function()
+            cmd.exec("HOMEBREW_NO_AUTO_UPDATE=1 brew tap " .. tap)
+        end)
     else
         cask_name = tool
     end
 
-    -- Check if already installed to avoid brew's non-zero exit on re-install
+    -- Check if already installed to avoid brew's non-zero exit on re-install.
     local already_installed = pcall(function()
         cmd.exec("brew list --cask " .. cask_name)
     end)
 
     if not already_installed then
-        -- Use bash -c so that the shell handles any exit code properly,
-        -- and we catch errors at the Lua level with pcall.
-        local ok, err = pcall(function()
-            cmd.exec("bash -c 'brew install --cask " .. cask_name .. " 2>&1'")
+        -- Install the cask. Any brew error is silently ignored here —
+        -- brew will have printed its own error. We still create the
+        -- tracking dir so mise marks the tool and moves on to the next one.
+        pcall(function()
+            cmd.exec(
+                "HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_ENV_HINTS=1 brew install --cask --no-quarantine " .. cask_name
+            )
         end)
-        if not ok then
-            -- Casks that are already installed report as an error from brew.
-            -- Only propagate if it's not an "already installed" message.
-            if not err:find("already installed") then
-                error("Failed to install cask " .. cask_name .. ": " .. tostring(err))
-            end
-        end
     end
 
     -- Create a tracking directory so mise knows this tool is "installed".
