@@ -30,7 +30,7 @@ function M.get_os_symbol()
     end
 
     local prefix = ""
-    if RUNTIME.archType == "amd64" then
+    if RUNTIME.archType == "arm64" then
         prefix = "arm64_"
     end
 
