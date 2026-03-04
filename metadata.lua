@@ -4,26 +4,26 @@
 
 PLUGIN = { -- luacheck: ignore
     -- Required: Plugin name (will be the backend name users reference)
-    name = "cask",
+    name = "<BACKEND>",
 
     -- Required: Plugin version (not the tool versions)
-    version = "0.0.1",
+    version = "1.0.0",
 
     -- Required: Brief description of the backend and tools it manages
-    description = "Homebrew Cask backend for mise",
+    description = "A mise backend plugin for <BACKEND> tools",
 
     -- Required: Plugin author/maintainer
-    author = "dt9",
+    author = "<GITHUB_USER>",
 
     -- Optional: Plugin homepage/repository URL
-    homepage = "https://github.com/BasixKOR/mise-brew",
+    homepage = "https://github.com/<GITHUB_USER>/<BACKEND>",
 
     -- Optional: Plugin license
     license = "MIT",
 
     -- Optional: Important notes for users
     notes = {
-        "Windows will not be supported as Homebrew does not build binaries for it.",
+        -- "Requires <BACKEND> to be installed on your system",
         -- "This plugin manages tools from the <BACKEND> ecosystem"
     },
 }
