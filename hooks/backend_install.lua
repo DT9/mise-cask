@@ -18,7 +18,8 @@ function PLUGIN:BackendInstall(ctx)
     utils.log("Installing " .. tool .. " via brew install --cask")
     
     -- Execute system brew install
-    local res = cmd.exec("brew install --cask " .. tool)
+    -- We append "|| true" to ignore errors if the app already exists or is already installed.
+    cmd.exec("brew install --cask " .. tool .. " || true")
     
     -- Create installation directory for mise to track
     cmd.exec("mkdir -p " .. install_path)
