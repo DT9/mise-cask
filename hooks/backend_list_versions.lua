@@ -24,7 +24,9 @@ function PLUGIN:BackendListVersions(ctx)
 
     local data = json.decode(resp.body)
     
+    utils.log("DEBUG: tool=" .. tool .. " token=" .. data.token .. " version=" .. data.version)
+
     -- Casks are inherently different from formulae bottles. 
-    -- We'll just return the stable version and handle the rest in Install.
-    return { versions = { data.token .. "@" .. data.version } }
+    -- Return ONLY the version string.
+    return { versions = { data.version } }
 end
